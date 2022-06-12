@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
+const { isNotResource } = require('./middlewares/app');
 
 const { PORT = 3000 } = process.env;
 
@@ -19,6 +20,7 @@ app.use((req, res, next) => {
 
 app.use('/users', usersRouter);
 app.use('/cards', cardsRouter);
+app.use('*', isNotResource);
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
