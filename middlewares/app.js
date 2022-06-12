@@ -1,5 +1,6 @@
 const BadRequestError = require('./httpErrorClasses/BadRequestError');
 const InternalServerError = require('./httpErrorClasses/InternalServerError');
+const ResourceNotFoundError = require('./httpErrorClasses/ResourceNotFoundError');
 
 const sendResponseWithErrorMessage = (res, err) => {
   res.status(err.statusCode).send(
@@ -19,7 +20,13 @@ const isDbErrors = (res, err) => {
   }
 };
 
+const isNotResource = (req, res) => {
+  const error = new ResourceNotFoundError('Сервер не может обработать ваш запрос. По заданному URL нет ресурсов');
+  sendResponseWithErrorMessage(res, error);
+};
+
 module.exports = {
   sendResponseWithErrorMessage,
-  isDbErrors
+  isDbErrors,
+  isNotResource
 };
