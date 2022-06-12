@@ -1,0 +1,22 @@
+ {
+   "extends": "airbnb-base",
+   "rules" : {
+     "no-underscore-dangle": ["error", { "allow": ["_id"] }],
+     "no-console": "off",
+     "comma-dangle": ["error", {
+        "arrays": "never",
+        "objects": "never",
+        "imports": "never",
+        "exports": "never",
+        "functions": "never"
+    }],
+     "object-curly-spacing": ["error", "always", { "objectsInObjects": false }],
+     "object-curly-newline": ["error", { "multiline": true }]
+   },
+   "parserOptions": {
+     "ecmaVersion": 2017
+   },
+   "env": {
+     "es6": true
+   }
+ }
