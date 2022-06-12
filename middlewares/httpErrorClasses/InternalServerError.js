@@ -4,4 +4,4 @@ module.exports = class InternalServerError extends Error {
     this.name = 'INTERNAL SERVER ERROR';
     this.statusCode = 500;
   }
-}
+};

@@ -4,4 +4,4 @@ module.exports = class ResourceNotFoundError extends Error {
     this.name = 'RESOURCE NOT FOUND';
     this.statusCode = 404;
   }
-}
+};

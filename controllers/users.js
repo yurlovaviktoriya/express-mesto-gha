@@ -7,7 +7,7 @@ const getAllUsers = (req, res) => {
       res.send({ users });
     }).catch((err) => {
       isDbErrors(res, err);
-  });
+    });
 };
 
 const getUser = (req, res) => {
@@ -17,7 +17,7 @@ const getUser = (req, res) => {
       res.send({ name, about, avatar, _id });
     }).catch((err) => {
       isDbErrors(res, err);
-  });
+    });
 };
 
 const createUser = (req, res) => {
@@ -32,7 +32,7 @@ const createUser = (req, res) => {
       });
     }).catch((err) => {
       isDbErrors(res, err);
-  });
+    });
 };
 
 const updateUserInfo = (req, res) => {
@@ -40,7 +40,8 @@ const updateUserInfo = (req, res) => {
   User.findByIdAndUpdate(
     req.user._id,
     { name, about },
-    { new: true, runValidators: true })
+    { new: true, runValidators: true }
+  )
     .then((data) => {
       res.send({
         name: data.name,
@@ -50,7 +51,7 @@ const updateUserInfo = (req, res) => {
       });
     }).catch((err) => {
       isDbErrors(res, err);
-  });
+    });
 };
 
 const updateAvatar = (req, res) => {
@@ -65,7 +66,7 @@ const updateAvatar = (req, res) => {
       });
     }).catch((err) => {
       isDbErrors(res, err);
-  });
+    });
 };
 
 module.exports = {

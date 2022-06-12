@@ -7,7 +7,7 @@ const getAllCards = (req, res) => {
       res.send({ cards });
     }).catch((err) => {
       isDbErrors(res, err);
-  });
+    });
 };
 
 const createCard = (req, res) => {
@@ -24,7 +24,7 @@ const createCard = (req, res) => {
       });
     }).catch((err) => {
       isDbErrors(res, err);
-  });
+    });
 };
 
 const deleteCard = (req, res) => {
@@ -35,14 +35,15 @@ const deleteCard = (req, res) => {
       );
     }).catch((err) => {
       isDbErrors(res, err);
-  });
+    });
 };
 
 const addCardLike = (req, res) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
-    ({ $addToSet: { likes: req.user._id } }),
-    { new: true, runValidators: true })
+    ({ $addToSet: { likes: req.user._id }}),
+    { new: true, runValidators: true }
+  )
     .then((card) => {
       res.send({
         name: card.name,
@@ -54,14 +55,15 @@ const addCardLike = (req, res) => {
       });
     }).catch((err) => {
       isDbErrors(res, err);
-  });
+    });
 };
 
 const deleteCardLike = (req, res) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
-    { $pull: { likes: req.user._id } },
-    { new: true })
+    { $pull: { likes: req.user._id }},
+    { new: true }
+  )
     .then((card) => {
       res.send({
         name: card.name,
@@ -73,7 +75,7 @@ const deleteCardLike = (req, res) => {
       });
     }).catch((err) => {
       isDbErrors(res, err);
-  });
+    });
 };
 
 module.exports = {
