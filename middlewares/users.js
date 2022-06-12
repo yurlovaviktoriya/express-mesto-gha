@@ -3,12 +3,12 @@ const { ObjectId } = require('mongoose').Types;
 const User = require('../models/user');
 const { sendResponseWithErrorMessage } = require('./app');
 
-const InternalServerError = require('./httpErrorClasses/InternalServerError');
+const BadRequestError = require('./httpErrorClasses/BadRequestError');
 const ResourceNotFoundError = require('./httpErrorClasses/ResourceNotFoundError');
 
 const checkRequestParams = (req, res, next) => {
   if (!ObjectId.isValid(req.params.id)) {
-    const err = new InternalServerError('Сервер не может обработать ваш запрос. Неверный формат id пользователя: '
+    const err = new BadRequestError('Сервер не может обработать ваш запрос. Неверный формат id пользователя: '
       + `в адресной строке: ${req.params.id}. Проверьте параметры URL.`);
     sendResponseWithErrorMessage(res, err);
     return;

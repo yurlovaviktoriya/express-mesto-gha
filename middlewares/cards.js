@@ -3,12 +3,12 @@ const { ObjectId } = require('mongoose').Types;
 const Card = require('../models/card');
 const { sendResponseWithErrorMessage } = require('./app');
 
-const InternalServerError = require('./httpErrorClasses/InternalServerError');
+const BadRequestError = require('./httpErrorClasses/BadRequestError');
 const ResourceNotFoundError = require('./httpErrorClasses/ResourceNotFoundError');
 
 const checkRequestParams = (req, res, next) => {
   if (!ObjectId.isValid(req.params.cardId)) {
-    const err = new InternalServerError('Сервер не может обработать ваш запрос. Неверный формат id карточки: '
+    const err = new BadRequestError('Сервер не может обработать ваш запрос. Неверный формат id карточки: '
       + `в адресной строке: ${req.params.cardId}. Проверьте параметры URL.`);
     sendResponseWithErrorMessage(res, err);
     return;
