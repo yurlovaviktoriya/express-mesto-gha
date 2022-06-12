@@ -1,9 +1,17 @@
-const router = require('../router');
+const router = require('express').Router();
 
-router.get('/users', getAllUsers);
-router.get('/users/:id', getUser);
+const { doesUserExist } = require('../middlewares/users');
+const { getAllUsers, getUser, createUser, updateUserInfo, updateAvatar } = require('../controllers/users');
 
-router.post('/users', createUser);
+router.route('/')
+  .get(getAllUsers)
+  .post(createUser);
 
-router.patch('/users/me', updateUserInfo);
-router.patch('/users/me/avatar', updateAvatar);
+router.route('/:id')
+  .get(doesUserExist)
+  .get(getUser);
+
+router.patch('/me', updateUserInfo);
+router.patch('/me/avatar', updateAvatar);
+
+module.exports = router;
