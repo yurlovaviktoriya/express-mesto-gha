@@ -30,9 +30,9 @@ const doesUserExist = (req, res, next) => {
 };
 
 const checkUserId = (req, res, next) => {
-  if (req.user._id !== '62a4175a3d9d8374d7f89724') {
+  if (!ObjectId.isValid(req.user._id)) {
     const err = new BadRequestError('Сервер не может обработать запрос. Запрет на изменение данных: '
-    + 'переданный id не совпадает с id в базе данных');
+    + 'некорректный id');
     sendResponseWithErrorMessage(res, err);
     return;
   }
