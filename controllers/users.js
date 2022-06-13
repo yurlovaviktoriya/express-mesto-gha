@@ -1,5 +1,5 @@
 const User = require('../models/user');
-const { isDbErrors } = require('../middlewares/app');
+const { isDbErrors, isNotResource } = require('../middlewares/app');
 
 const getAllUsers = (req, res) => {
   User.find({})
@@ -43,6 +43,9 @@ const updateUserInfo = (req, res) => {
     { new: true, runValidators: true }
   )
     .then((data) => {
+      if (!data) {
+        isNotResource(req, res);
+      }
       res.send({
         name: data.name,
         about: data.about,
@@ -58,6 +61,9 @@ const updateAvatar = (req, res) => {
   const { avatar } = req.body;
   User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true })
     .then((data) => {
+      if (!data) {
+        isNotResource(req, res);
+      }
       res.send({
         name: data.name,
         about: data.about,

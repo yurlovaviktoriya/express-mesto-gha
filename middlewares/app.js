@@ -21,7 +21,7 @@ const isDbErrors = (res, err) => {
 };
 
 const isNotResource = (req, res) => {
-  const error = new ResourceNotFoundError('Сервер не может обработать ваш запрос. По заданному URL нет ресурсов');
+  const error = new ResourceNotFoundError('Сервер не может обработать ваш запрос. По заданному запросу нет ресурсов');
   sendResponseWithErrorMessage(res, error);
 };
 
