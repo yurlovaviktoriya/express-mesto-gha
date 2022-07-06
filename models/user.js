@@ -1,6 +1,16 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
+  email: {
+    type: String,
+    required: [true, 'Поле с электронной почтой обязательно для заполнения. Получена пустая строка.'],
+    unique: [true, 'Поле с электронной почтой должно быть уникальным. Такая почта уже зарегистрирована']
+  },
+  password: {
+    type: String,
+    required: [true, 'Поле с паролем обязательно для заполнения. Получена пустая строка.'],
+    minlength: [2, 'Пароль должен содержать минимум 8 символов']
+  },
   name: {
     type: String,
     required: [true, 'Поле с именем обязательно для заполнения. Получена пустая строка.'],
