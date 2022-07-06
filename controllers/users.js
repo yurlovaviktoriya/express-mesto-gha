@@ -1,3 +1,5 @@
+const bcrypt = require('bcryptjs');
+
 const User = require('../models/user');
 const { isDbErrors, isNotResource } = require('../middlewares/app');
 
@@ -21,9 +23,11 @@ const getUser = (req, res) => {
 };
 
 const createUser = (req, res) => {
-  const { name, about, avatar } = req.body;
-  User.create({ name, about, avatar })
-    .then((data) => {
+  const { email, password, name, about, avatar } = req.body;
+  bcrypt.hash(password, 10)
+    .then((hash) => {
+      User.create({ email, password: hash, name, about, avatar });
+    }).then((data) => {
       res.send({
         name: data.name,
         about: data.about,
