@@ -61,6 +61,16 @@ const createUser = (req, res) => {
     });
 };
 
+const getCurrentUserInfo = (req, res) => {
+  User.findById(req.user._id)
+    .then((data) => {
+      const { name, about, avatar, _id } = data;
+      res.send({ name, about, avatar, _id });
+    }).catch((err) => {
+      isDbErrors(res, err);
+    });
+};
+
 const updateUserInfo = (req, res) => {
   const { name, about } = req.body;
   User.findByIdAndUpdate(
@@ -105,6 +115,7 @@ module.exports = {
   login,
   getAllUsers,
   getUser,
+  getCurrentUserInfo,
   createUser,
   updateUserInfo,
   updateAvatar
