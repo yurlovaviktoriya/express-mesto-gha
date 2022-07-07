@@ -2,11 +2,10 @@ const router = require('express').Router();
 
 const { checkRequestParams, doesUserExist, checkUserId } = require('../middlewares/users');
 const { isNotResource } = require('../middlewares/app');
-const { getAllUsers, getUser, createUser, updateUserInfo, updateAvatar } = require('../controllers/users');
+const { getAllUsers, getUser, updateUserInfo, updateAvatar } = require('../controllers/users');
 
 router.route('/')
-  .get(getAllUsers)
-  .post(createUser);
+  .get(getAllUsers);
 
 router.route('/:id')
   .get(checkRequestParams)
