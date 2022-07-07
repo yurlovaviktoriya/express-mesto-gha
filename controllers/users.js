@@ -1,7 +1,25 @@
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 const User = require('../models/user');
 const { isDbErrors, isNotResource } = require('../middlewares/app');
+
+const login = (req, res) => {
+  const { email, password } = req.body;
+  return User.findUserByCredentials(email, password)
+    .then((user) => {
+      const { NODE_ENV, JWT_SECRET } = process.env;
+      const token = jwt.sign(
+        { _id: user._id },
+        NODE_ENV === 'production' ? JWT_SECRET : 'dev_secret',
+        { expiresIn: '7d' }
+      );
+      res.send(token);
+    }).catch((err) => {
+      res.send('Ошибка. Неправильные почта или пароль'); //добавить обработку ошибки
+    });
+};
 
 const getAllUsers = (req, res) => {
   User.find({})
@@ -80,6 +98,7 @@ const updateAvatar = (req, res) => {
 };
 
 module.exports = {
+  login,
   getAllUsers,
   getUser,
   createUser,
