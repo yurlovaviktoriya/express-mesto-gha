@@ -15,9 +15,13 @@ const login = (req, res) => {
         NODE_ENV === 'production' ? JWT_SECRET : 'dev_secret',
         { expiresIn: '7d' }
       );
-      res.send(token);
-    }).catch((err) => {
-      res.send('Ошибка. Неправильные почта или пароль'); //добавить обработку ошибки
+      res.cookie('jwt', token, {
+        maxAge: 3600000 * 24 * 7,
+        httpOnly: true,
+        someSite: true
+      }).end();
+    }).catch(() => {
+      res.status(401).send({ message: 'Ошибка. Неправильные почта или пароль' });
     });
 };
 
