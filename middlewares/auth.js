@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
   if (!authorization || !authorization.startsWith('Bearer')) {
     return res.status(401).send({ message: 'Требуется авторизация' });
   }
-  const token = authorization.replace('Bearer', '');
+  const token = authorization.replace('Bearer ', '');
   let playload;
   try {
     playload = jwt.verify(
