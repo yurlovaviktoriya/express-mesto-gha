@@ -7,11 +7,6 @@ const { getAllUsers, getUser, getCurrentUserInfo, updateUserInfo, updateAvatar }
 router.route('/')
   .get(getAllUsers);
 
-router.route('/:id')
-  .get(checkRequestParams)
-  .get(doesUserExist)
-  .get(getUser);
-
 router.route('/me')
   .get(getCurrentUserInfo)
   .patch(checkUserId)
@@ -20,6 +15,11 @@ router.route('/me')
 router.route('/me/avatar')
   .patch(checkUserId)
   .patch(updateAvatar);
+
+router.route('/:id')
+  .get(checkRequestParams)
+  .get(doesUserExist)
+  .get(getUser);
 
 router.all('*', isNotResource);
 
