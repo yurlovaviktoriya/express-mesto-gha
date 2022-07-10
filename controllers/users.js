@@ -4,6 +4,7 @@ require('dotenv').config();
 
 const User = require('../models/user');
 const { isDbErrors, isNotResource } = require('../middlewares/app');
+const ConflictError = require('../middlewares/httpErrorClasses/ConflictError');
 
 const login = (req, res, next) => {
   const { email, password } = req.body;
@@ -55,8 +56,13 @@ const createUser = (req, res, next) => {
         _id: data._id
       });
     }).catch((err) => {
+      if (err.code === 11000) {
+        res.clearCookie('jwt');
+        throw new ConflictError('Пользователь с таким email-адресом уже зарегистрирован');
+      }
       isDbErrors(err);
-    }).catch(next);
+    })
+    .catch(next);
 };
 
 const getCurrentUserInfo = (req, res, next) => {
