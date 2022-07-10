@@ -7,7 +7,7 @@ const auth = require('./middlewares/auth');
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
 const { doesEmailExist } = require('./middlewares/users');
-const { isNotResource } = require('./middlewares/app');
+const { isNotResource, sendResponseWithErrorMessage } = require('./middlewares/app');
 
 const { PORT = 3000 } = process.env;
 
@@ -24,6 +24,8 @@ app.use(auth);
 app.use('/users', usersRouter);
 app.use('/cards', cardsRouter);
 app.use('*', isNotResource);
+
+app.use(sendResponseWithErrorMessage);
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);

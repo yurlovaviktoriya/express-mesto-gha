@@ -1,28 +1,29 @@
 const BadRequestError = require('./httpErrorClasses/BadRequestError');
-const InternalServerError = require('./httpErrorClasses/InternalServerError');
 const ResourceNotFoundError = require('./httpErrorClasses/ResourceNotFoundError');
 
-const sendResponseWithErrorMessage = (res, err) => {
-  res.status(err.statusCode).send(
-    { message: `Ошибка: ${err.statusCode}.${err.name}. ${err.message}` }
-  );
-};
-
-const isDbErrors = (res, err) => {
-  if ('errors' in err) {
-    const error = new BadRequestError(`Переданы некорректные данные для полей ${Object.keys(err.errors)}. `
-      + `Сервер не может обработать ваш запрос. Сообщение сервера: ${err.message}`);
-    sendResponseWithErrorMessage(res, error);
-  } else {
-    const error = new InternalServerError('На сервере произошла ошибка. Проверьте URL, корректность данных и '
-      + 'повторите запрос. Если ошибка не исчезла, попробуйте обратиться позже');
-    sendResponseWithErrorMessage(res, error);
+const sendResponseWithErrorMessage = (err, req, res, next) => {
+  if (err) {
+    const { statusCode = 500, message } = err;
+    res.status(statusCode).send({
+      message: statusCode === 500
+        ? 'На сервере произошла ошибка. Проверьте URL, корректность данных и '
+            + 'повторите запрос. Если ошибка не исчезла, попробуйте обратиться позже'
+        : message
+    });
   }
+  next();
 };
 
-const isNotResource = (req, res) => {
-  const error = new ResourceNotFoundError('Сервер не может обработать ваш запрос. По заданному запросу нет ресурсов');
-  sendResponseWithErrorMessage(res, error);
+const isDbErrors = (err) => {
+  if ('errors' in err) {
+    throw new BadRequestError(`Переданы некорректные данные для полей ${Object.keys(err.errors)}. `
+      + `Сервер не может обработать ваш запрос. Сообщение сервера: ${err.message}`);
+  }
+  return;
+};
+
+const isNotResource = () => {
+  throw new ResourceNotFoundError('Сервер не может обработать ваш запрос. По заданному запросу нет ресурсов');
 };
 
 module.exports = {

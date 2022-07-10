@@ -1,19 +1,20 @@
 const { ObjectId } = require('mongoose').Types;
 
 const User = require('../models/user');
-const { sendResponseWithErrorMessage } = require('./app');
 
 const BadRequestError = require('./httpErrorClasses/BadRequestError');
 const ResourceNotFoundError = require('./httpErrorClasses/ResourceNotFoundError');
+const ConflictError = require('./httpErrorClasses/ConflictError');
 
 const checkRequestParams = (req, res, next) => {
-  if (!ObjectId.isValid(req.params.id)) {
-    const err = new BadRequestError('Сервер не может обработать ваш запрос. Неверный формат id пользователя: '
-      + `в адресной строке: ${req.params.id}. Проверьте параметры URL.`);
-    sendResponseWithErrorMessage(res, err);
-    return;
-  }
-  next();
+  Promise.resolve(req.params.id)
+    .then((id) => {
+      if (!ObjectId.isValid(id)) {
+        throw new BadRequestError('Сервер не может обработать ваш запрос. Неверный формат id пользователя: '
+          + `в адресной строке: ${req.params.id}. Проверьте параметры URL.`);
+      }
+      next();
+    }).catch(next);
 };
 
 const doesEmailExist = (req, res, next) => {
@@ -21,42 +22,24 @@ const doesEmailExist = (req, res, next) => {
   User.findOne({ email })
     .then((user) => {
       if (user) {
-        const err = new BadRequestError(`Пользователь с почтой ${email} уже существует`);
-        return Promise.reject(err);
+        throw new ConflictError(`Пользователь с почтой ${email} уже существует`);
       }
       next();
-    }).catch((err) => {
-      sendResponseWithErrorMessage(res, err);
-    });
+    }).catch(next);
 };
-
 
 const doesUserExist = (req, res, next) => {
   User.findById(req.params.id)
     .then((user) => {
       if (!user) {
-        const err = new ResourceNotFoundError(`Запрашиваемый пользователь с id ${req.params.id} не найден`);
-        return Promise.reject(err);
+        throw new ResourceNotFoundError(`Запрашиваемый пользователь с id ${req.params.id} не найден`);
       }
       next();
-    }).catch((err) => {
-      sendResponseWithErrorMessage(res, err);
-    });
-};
-
-const checkUserId = (req, res, next) => {
-  if (!ObjectId.isValid(req.user._id)) {
-    const err = new BadRequestError('Сервер не может обработать запрос. Запрет на изменение данных: '
-    + 'некорректный id');
-    sendResponseWithErrorMessage(res, err);
-    return;
-  }
-  next();
+    }).catch(next);
 };
 
 module.exports = {
   checkRequestParams,
   doesEmailExist,
-  doesUserExist,
-  checkUserId
+  doesUserExist
 };
