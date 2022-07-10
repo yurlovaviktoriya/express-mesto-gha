@@ -32,7 +32,7 @@ const doesPermissionDelete = (req, res, next) => {
   Promise.resolve({ cardOwner: req.card.owner, userId: req.user._id })
     .then((data) => {
       const { cardOwner, userId } = data;
-      if (cardOwner !== userId) {
+      if (ObjectId.isValid(cardOwner) !== ObjectId.isValid(userId)) {
         throw new ForbiddenError('Нельзя удалять чужую карточку. '
           + `Автор карточки ${cardOwner} и пользователь ${userId} не совпадают`);
       }
