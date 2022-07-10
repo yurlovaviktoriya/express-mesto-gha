@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const { checkRequestParams, doesUserExist } = require('../middlewares/users');
+const { doesUserExist } = require('../middlewares/users');
 const { isNotResource } = require('../middlewares/app');
 const { updateUserInfoValidator, updateAvatarValidator, userIdValidator } = require('../middlewares/validation/users');
 const { getAllUsers, getUser, getCurrentUserInfo, updateUserInfo, updateAvatar } = require('../controllers/users');
@@ -16,7 +16,6 @@ router.route('/me/avatar')
   .patch(updateAvatarValidator, updateAvatar);
 
 router.route('/:id')
-  // .get(checkRequestParams)
   .get(userIdValidator, doesUserExist)
   .get(getUser);
 

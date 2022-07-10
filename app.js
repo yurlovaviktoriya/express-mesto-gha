@@ -11,7 +11,6 @@ const { signupValidator, signinValidator } = require('./middlewares/validation/u
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
 
-
 const { PORT = 3000 } = process.env;
 
 const app = express();

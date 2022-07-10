@@ -1,21 +1,7 @@
-// const { ObjectId } = require('mongoose').Types;
-
 const Card = require('../models/card');
 
-const BadRequestError = require('./httpErrorClasses/BadRequestError');
 const ResourceNotFoundError = require('./httpErrorClasses/ResourceNotFoundError');
 const ForbiddenError = require('./httpErrorClasses/ForbiddenError');
-
-const checkRequestParams = (req, res, next) => {
-  Promise.resolve(req.params.cardId)
-    .then((id) => {
-      if (!ObjectId.isValid(id)) {
-        throw new BadRequestError('Сервер не может обработать ваш запрос. Неверный формат id карточки: '
-        + `в адресной строке: ${req.params.cardId}. Проверьте параметры URL.`);
-      }
-      next();
-    }).catch(next);
-};
 
 const doesCardExist = (req, res, next) => {
   Card.findById(req.params.cardId)
@@ -41,7 +27,6 @@ const doesPermissionDelete = (req, res, next) => {
 };
 
 module.exports = {
-  checkRequestParams,
   doesCardExist,
   doesPermissionDelete
 };
