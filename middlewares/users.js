@@ -17,17 +17,6 @@ const checkRequestParams = (req, res, next) => {
     }).catch(next);
 };
 
-const doesEmailExist = (req, res, next) => {
-  const { email } = req.body;
-  User.findOne({ email })
-    .then((user) => {
-      if (user) {
-        throw new ConflictError(`Пользователь с почтой ${email} уже существует`);
-      }
-      next();
-    }).catch(next);
-};
-
 const doesUserExist = (req, res, next) => {
   User.findById(req.params.id)
     .then((user) => {
@@ -40,6 +29,5 @@ const doesUserExist = (req, res, next) => {
 
 module.exports = {
   checkRequestParams,
-  doesEmailExist,
   doesUserExist
 };
