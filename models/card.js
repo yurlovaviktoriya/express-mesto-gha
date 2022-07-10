@@ -9,7 +9,13 @@ const cardSchema = new mongoose.Schema({
   },
   link: {
     type: String,
-    required: [true, 'Поле со ссылкой на изображение обязательно для заполнения. Получена пустая строка.']
+    required: [true, 'Поле со ссылкой на изображение обязательно для заполнения. Получена пустая строка.'],
+    validate: {
+      validator(v) {
+        return /^http(s)?:\/\/(www\.)?([\w-]+\.)+(\w)+(\/[\w-._~:/?#\[\]@!$&'()*+,;=]+)?#?$/.test(v);
+      },
+      message: (props) => `${props.value} is not a valid uri!`
+    }
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
