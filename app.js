@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const { errors } = require('celebrate');
 
 const { login, createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
@@ -24,6 +25,7 @@ app.use('/users', usersRouter);
 app.use('/cards', cardsRouter);
 app.use('*', isNotResource);
 
+app.use(errors());
 app.use(sendResponseWithErrorMessage);
 
 app.listen(PORT, () => {
