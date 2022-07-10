@@ -2,7 +2,7 @@ const router = require('express').Router();
 
 const { checkRequestParams, doesCardExist, doesPermissionDelete } = require('../middlewares/cards');
 const { isNotResource } = require('../middlewares/app');
-const { cardValidator } = require('../middlewares/validation/cards');
+const { cardValidator, cardIdValidator } = require('../middlewares/validation/cards');
 const { getAllCards, createCard, deleteCard, addCardLike, deleteCardLike } = require('../controllers/cards');
 
 router.route('/')
@@ -10,14 +10,14 @@ router.route('/')
   .post(cardValidator, createCard);
 
 router.route('/:cardId')
-  .delete(checkRequestParams)
-  .delete(doesCardExist)
+  // .delete(checkRequestParams)
+  .delete(cardIdValidator, doesCardExist)
   .delete(doesPermissionDelete)
   .delete(deleteCard);
 
 router.route('/:cardId/likes')
-  .all(checkRequestParams)
-  .all(doesCardExist)
+  // .all(checkRequestParams)
+  .all(cardIdValidator, doesCardExist)
   .put(addCardLike)
   .delete(deleteCardLike);
 

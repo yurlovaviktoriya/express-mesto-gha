@@ -6,3 +6,9 @@ module.exports.cardValidator = celebrate({
     link: Joi.string().required().uri()
   })
 });
+
+module.exports.cardIdValidator = celebrate({
+  params: Joi.object().keys({
+    cardId: Joi.string().alphanum().length(24)
+  })
+});
