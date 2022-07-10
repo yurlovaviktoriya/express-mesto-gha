@@ -20,7 +20,7 @@ const login = (req, res, next) => {
         maxAge: 3600000 * 24 * 7,
         httpOnly: true,
         someSite: true
-      }).end();
+      }).send({ _id: user._id });
     }).catch((err) => {
       res.clearCookie('jwt');
       next(err);
