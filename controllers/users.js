@@ -69,8 +69,8 @@ const createUser = (req, res, next) => {
 const getCurrentUserInfo = (req, res, next) => {
   User.findById(req.user._id)
     .then((data) => {
-      const { name, about, avatar, _id } = data;
-      res.send({ name, about, avatar, _id });
+      const { email, name, about, avatar, _id } = data;
+      res.send({ email, name, about, avatar, _id });
     }).catch((err) => {
       isDbErrors(err);
     }).catch(next);
