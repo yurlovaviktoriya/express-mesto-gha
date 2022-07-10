@@ -1,11 +1,11 @@
 const jwt = require('jsonwebtoken');
-require('dotenv').config();
+// require('dotenv').config();
 
 const UnauthorizedError = require('./httpErrorClasses/UnauthorizedError');
 
 module.exports = (req, res, next) => {
   const { authorization } = req.headers;
-  const { NODE_ENV, JWT_SECRET } = process.env;
+  // const { NODE_ENV, JWT_SECRET } = process.env;
   if (!authorization || !authorization.startsWith('Bearer')) {
     throw new UnauthorizedError('Требуется авторизация');
   }
@@ -14,7 +14,8 @@ module.exports = (req, res, next) => {
   try {
     playload = jwt.verify(
       token,
-      NODE_ENV === 'production' ? JWT_SECRET : 'dev_secret'
+      // NODE_ENV === 'production' ? JWT_SECRET : 'dev_secret'
+      'some_dev_secret'
     );
   } catch (err) {
     throw new UnauthorizedError('Требуется авторизация');
