@@ -6,7 +6,7 @@ const { errors } = require('celebrate');
 const { login, createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const { isNotResource, sendResponseWithErrorMessage } = require('./middlewares/app');
-const { signupValidator } = require('./middlewares/validation/users');
+const { signupValidator, signinValidator } = require('./middlewares/validation/users');
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
 
@@ -18,7 +18,7 @@ mongoose.connect('mongodb://localhost:27017/mestodb');
 
 app.use(bodyParser.json());
 
-app.post('/signin', login);
+app.post('/signin', signinValidator, login);
 app.post('/signup', signupValidator, createUser);
 
 app.use(auth);

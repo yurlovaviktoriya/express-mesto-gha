@@ -9,3 +9,10 @@ module.exports.signupValidator = celebrate({
     avatar: Joi.string().uri()
   })
 });
+
+module.exports.signinValidator = celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+    password: Joi.string().required().min(8)
+  })
+});
