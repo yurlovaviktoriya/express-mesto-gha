@@ -32,6 +32,6 @@ module.exports.updateUserInfoValidator = celebrate({
 
 module.exports.updateAvatarValidator = celebrate({
   body: Joi.object().keys({
-    avatar: Joi.string().uri()
+    avatar: Joi.string().regex(/^http(s)?:\/\/(www\.)?([\w-]+\.)+(\w)+(\/[\w-._~:/?#\[\]@!$&'()*+,;=]+)?#?$/)
   })
 });
