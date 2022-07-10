@@ -16,3 +16,16 @@ module.exports.signinValidator = celebrate({
     password: Joi.string().required().min(8)
   })
 });
+
+module.exports.updateUserInfoValidator = celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().min(2).max(30),
+    about: Joi.string().min(2).max(30)
+  })
+});
+
+module.exports.updateAvatarValidator = celebrate({
+  body: Joi.object().keys({
+    avatar: Joi.string().uri()
+  })
+});
