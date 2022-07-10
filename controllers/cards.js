@@ -1,16 +1,16 @@
 const Card = require('../models/card');
 const { isDbErrors } = require('../middlewares/app');
 
-const getAllCards = (req, res) => {
+const getAllCards = (req, res, next) => {
   Card.find({})
     .then((cards) => {
       res.send({ cards });
     }).catch((err) => {
-      isDbErrors(res, err);
-    });
+      isDbErrors(err);
+    }).catch(next);
 };
 
-const createCard = (req, res) => {
+const createCard = (req, res, next) => {
   const { name, link } = req.body;
   Card.create({ name, link, owner: req.user._id })
     .then((card) => {
@@ -23,8 +23,8 @@ const createCard = (req, res) => {
         _id: card._id
       });
     }).catch((err) => {
-      isDbErrors(res, err);
-    });
+      isDbErrors(err);
+    }).catch(next);
 };
 
 const deleteCard = (req, res) => {
@@ -38,7 +38,7 @@ const deleteCard = (req, res) => {
     });
 };
 
-const addCardLike = (req, res) => {
+const addCardLike = (req, res, next) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
     ({ $addToSet: { likes: req.user._id }}),
@@ -54,11 +54,11 @@ const addCardLike = (req, res) => {
         _id: card._id
       });
     }).catch((err) => {
-      isDbErrors(res, err);
-    });
+      isDbErrors(err);
+    }).catch(next);
 };
 
-const deleteCardLike = (req, res) => {
+const deleteCardLike = (req, res, next) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $pull: { likes: req.user._id }},
@@ -74,8 +74,8 @@ const deleteCardLike = (req, res) => {
         _id: card._id
       });
     }).catch((err) => {
-      isDbErrors(res, err);
-    });
+      isDbErrors(err);
+    }).catch(next);
 };
 
 module.exports = {
