@@ -1,14 +1,14 @@
 const { celebrate, Joi } = require('celebrate');
 
+const regexLink = require('./regex');
+
 module.exports.signupValidator = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
-    avatar: Joi.string().regex(
-      /^http(s)?:\/\/(www\.)?([\w-]+\.)+(\w)+(\/[\w-._~:/?#\[\]@!$&'()*+,;=]+)?#?$/
-    )
+    avatar: Joi.string().regex(new RegExp(regexLink))
   })
 });
 
@@ -34,8 +34,6 @@ module.exports.updateUserInfoValidator = celebrate({
 
 module.exports.updateAvatarValidator = celebrate({
   body: Joi.object().keys({
-    avatar: Joi.string().regex(
-      /^http(s)?:\/\/(www\.)?([\w-]+\.)+(\w)+(\/[\w-._~:/?#\[\]@!$&'()*+,;=]+)?#?$/
-    )
+    avatar: Joi.string().regex(new RegExp(regexLink))
   })
 });

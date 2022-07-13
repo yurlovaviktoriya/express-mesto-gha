@@ -1,11 +1,11 @@
 const { celebrate, Joi } = require('celebrate');
 
+const regexLink = require('./regex');
+
 module.exports.cardValidator = celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
-    link: Joi.string().required().regex(
-      /^http(s)?:\/\/(www\.)?([\w-]+\.)+(\w)+(\/[\w-._~:/?#\[\]@!$&'()*+,;=]+)?#?$/
-    )
+    link: Joi.string().required().regex(new RegExp(regexLink))
   })
 });
 
