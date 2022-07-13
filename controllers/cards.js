@@ -27,7 +27,7 @@ const createCard = (req, res, next) => {
     }).catch(next);
 };
 
-const deleteCard = (req, res) => {
+const deleteCard = (req, res, next) => {
   Card.findByIdAndRemove(req.params.cardId)
     .then(() => {
       res.send(
@@ -35,7 +35,7 @@ const deleteCard = (req, res) => {
       );
     }).catch((err) => {
       isDbErrors(res, err);
-    });
+    }).catch(next);
 };
 
 const addCardLike = (req, res, next) => {

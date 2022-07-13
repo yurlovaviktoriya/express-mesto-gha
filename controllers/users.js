@@ -29,8 +29,6 @@ const getAllUsers = (req, res, next) => {
   User.find({})
     .then((users) => {
       res.send({ users });
-    }).catch((err) => {
-      isDbErrors(err);
     }).catch(next);
 };
 
@@ -68,8 +66,6 @@ const getCurrentUserInfo = (req, res, next) => {
     .then((data) => {
       const { email, name, about, avatar, _id } = data;
       res.send({ email, name, about, avatar, _id });
-    }).catch((err) => {
-      isDbErrors(err);
     }).catch(next);
 };
 
