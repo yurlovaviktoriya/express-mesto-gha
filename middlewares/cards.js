@@ -15,15 +15,11 @@ const doesCardExist = (req, res, next) => {
 };
 
 const doesPermissionDelete = (req, res, next) => {
-  Promise.resolve({ cardOwner: req.card.owner, userId: req.user._id })
-    .then((data) => {
-      const { cardOwner, userId } = data;
-      if (!(String(cardOwner) === String(userId))) {
-        throw new ForbiddenError('Нельзя удалять чужую карточку. '
-          + `Автор карточки ${cardOwner} и пользователь ${userId} не совпадают`);
-      }
-      next();
-    }).catch(next);
+  if (!(String(req.card.owner) === String(req.user._id))) {
+    throw new ForbiddenError('Нельзя удалять чужую карточку. '
+      + `Автор карточки ${req.card.owner} и пользователь ${req.user._id} не совпадают`);
+  }
+  next();
 };
 
 module.exports = {
