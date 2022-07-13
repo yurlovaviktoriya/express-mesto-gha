@@ -1,7 +1,6 @@
 const router = require('express').Router();
 
 const { doesUserExist } = require('../middlewares/users');
-const { isNotResource } = require('../middlewares/app');
 const { updateUserInfoValidator, updateAvatarValidator, userIdValidator } = require('../middlewares/validation/users');
 const { getAllUsers, getUser, getCurrentUserInfo, updateUserInfo, updateAvatar } = require('../controllers/users');
 
@@ -18,7 +17,5 @@ router.route('/me/avatar')
 router.route('/:id')
   .get(userIdValidator, doesUserExist)
   .get(getUser);
-
-router.all('*', isNotResource);
 
 module.exports = router;
