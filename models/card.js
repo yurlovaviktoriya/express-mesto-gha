@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+const { regexLink } = require('../middlewares/validation/regex');
+
 const cardSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -12,7 +14,7 @@ const cardSchema = new mongoose.Schema({
     required: [true, 'Поле со ссылкой на изображение обязательно для заполнения. Получена пустая строка.'],
     validate: {
       validator(v) {
-        return /^http(s)?:\/\/(www\.)?([\w-]+\.)+(\w)+(\/[\w-._~:/?#\[\]@!$&'()*+,;=]+)?#?$/.test(v);
+        return regexLink.test(v);
       },
       message: (props) => `${props.value} is not a valid uri!`
     }

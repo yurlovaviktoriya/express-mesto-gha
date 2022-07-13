@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const validator = require('validator');
 
 const UnauthorizedError = require('../middlewares/httpErrorClasses/UnauthorizedError');
+const { regexLink } = require('../middlewares/validation/regex');
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -38,7 +39,7 @@ const userSchema = new mongoose.Schema({
     default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
     validate: {
       validator(v) {
-        return /^http(s)?:\/\/(www\.)?([\w-]+\.)+(\w)+(\/[\w-._~:/?#\[\]@!$&'()*+,;=]+)?#?$/.test(v);
+        return regexLink.test(v);
       },
       message: (props) => `${props.value} is not a valid uri!`
     }
