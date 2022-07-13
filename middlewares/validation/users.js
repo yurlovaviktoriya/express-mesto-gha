@@ -1,6 +1,6 @@
 const { celebrate, Joi } = require('celebrate');
 
-const regexLink = require('./regex');
+const { regexLink } = require('./regex');
 
 module.exports.signupValidator = celebrate({
   body: Joi.object().keys({
@@ -8,7 +8,7 @@ module.exports.signupValidator = celebrate({
     password: Joi.string().required().min(8),
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
-    avatar: Joi.string().regex(new RegExp(regexLink))
+    avatar: Joi.string().pattern(regexLink)
   })
 });
 
