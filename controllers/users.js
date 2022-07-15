@@ -7,11 +7,12 @@ const ConflictError = require('../middlewares/httpErrorClasses/ConflictError');
 
 const login = (req, res, next) => {
   const { email, password } = req.body;
+  const { NODE_ENV, JWT_SECRET } = process.env;
   User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign(
         { _id: user._id },
-        'some_dev_secret',
+        NODE_ENV === 'production' ? JWT_SECRET : 'some-dev-secret',
         { expiresIn: '7d' }
       );
       res.cookie('jwt', token, {

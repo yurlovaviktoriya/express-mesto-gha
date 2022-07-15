@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const { errors } = require('celebrate');
+require('dotenv').config();
 
 const { login, createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
